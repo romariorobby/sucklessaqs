@@ -1,0 +1,5 @@
+st
+*.pkg.tar.xz
+*.o
+pkg/
+patches
