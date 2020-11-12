@@ -33,5 +33,5 @@
 	- Bstackhoriz
 	- Grid
 	- Centered
-- [ ] 
+- [X] 
 
