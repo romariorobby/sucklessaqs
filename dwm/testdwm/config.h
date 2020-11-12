@@ -116,7 +116,7 @@ static Key keys[] = {
 //	{ MODKEY|Mod4Mask|ShiftMask,    XK_8,      incrohgaps,     {.i = -1 } },
 //	{ MODKEY|Mod4Mask,              XK_9,      incrovgaps,     {.i = +1 } },
 //	{ MODKEY|Mod4Mask|ShiftMask,    XK_9,      incrovgaps,     {.i = -1 } },
-	{ MODKEY|ShiftMask|ControlMask, XK_BackSpace,      defaultgaps,    {0} },
+	{ MODKEY|ControlMask,           XK_BackSpace,      defaultgaps,    {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
