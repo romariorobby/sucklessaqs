@@ -1,18 +1,21 @@
 # DWM 6.2
 # Patches..
-- + actualfullscreen
-- + nextprev/shiftview
-- + sticky
-- + attachdirection
-- + systray (+toggle)
-- + vanitygaps
-- + pertag 
-- + dwmblocks
+- actualfullscreen
+  `super + f`
+- nextprev/shiftview
+- sticky
+  `super + s`
+- attachdirection
+- systray (+toggle)
+  `super + shift + b`
+- vanitygaps
+- pertag 
+- dwmblocks
 - swallow
 - scratchpads
 
 # TODOS
-- [X] More layout (
+- [X] More layout 
 	- Spiral
 	- Dwindle
 	- Deck
