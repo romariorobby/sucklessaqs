@@ -12,6 +12,13 @@
 - + dwmblocks
 
 # TODOS
-- [ ] New layout 
+- [X] More layout (
+	- Spiral
+	- Dwindle
+	- Deck
+	- Bstack
+	- Bstackhoriz
+	- Grid
+	- Centered
 - [ ] 
 
