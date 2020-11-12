@@ -1,15 +1,15 @@
 # DWM 6.2
 # Patches..
 - + actualfullscreen
-- nextprev/shiftview
-- sticky
-- swallow
-- scratchpads
-- attachdirection
+- + nextprev/shiftview
+- + sticky
+- + attachdirection
 - + systray (+toggle)
 - + vanitygaps
-- pertag 
+- + pertag 
 - + dwmblocks
+- swallow
+- scratchpads
 
 # TODOS
 - [X] More layout (
