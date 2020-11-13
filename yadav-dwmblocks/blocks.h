@@ -15,11 +15,11 @@
  * pathc - path of the program to be executed on clicks */
 static Block blocks[] = {
 /*      pathu                           pathc                                   interval        signal */
-//        { PATH("calendar.sh"),          NULL,                                   30,             3},
+//        { PATH("calendar"),          NULL,                                   30,             3},
         { PATH("packages"),          PATH("packages_button"),                   0,              5},
         { PATH("volume"),            PATH("volume_button"),                     0,              5},
-//        { PATH("cpu_temp.sh"),          PATH("cpu_temp_button.sh"),             1,              4},
-//        { PATH("battery.sh"),           PATH("battery_button.sh"),              30,             2},
+//        { PATH("cputemp"),          PATH("cputemp_button"),             1,              4},
+//        { PATH("battery"),           PATH("battery_button"),              30,             2},
         { PATH("clock"),             NULL,                                      1,              1},
         { PATH("internet"),          PATH("internet_button"),                   5,              4},
 
