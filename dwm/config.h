@@ -102,6 +102,7 @@ static const Layout layouts[] = {
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#include <X11/XF86keysym.h>
 #include "shiftview.c"
 
 /* commands */
@@ -172,6 +173,7 @@ static Key keys[] = {
 	{ MODKEY,            			XK_z,  	          togglescratch,      {.ui = 0 } },
 	{ MODKEY,            			XK_x,	          togglescratch,      {.ui = 1 } },
 	{ MODKEY,            			XK_c,	          togglescratch,      {.ui = 2 } },
+	{ MODKEY,			            XK_F4,		      spawn,		      SHCMD(TERMINAL " -e pulsemixer; kill -44 $(pidof dwmblocks)") },
 	TAGKEYS(                        XK_1,                                 0)
 	TAGKEYS(                        XK_2,                                 1)
 	TAGKEYS(                        XK_3,                                 2)
@@ -182,6 +184,10 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                                 7)
 	TAGKEYS(                        XK_9,                                 8)
 	{ MODKEY|ShiftMask,             XK_q,             quit,               {0} },
+
+	{ 0,                            XF86XK_AudioMute,		    spawn,	  SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
+	{ 0,                            XF86XK_AudioRaiseVolume,	spawn,	  SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)") },
+	{ 0,                            XF86XK_AudioLowerVolume,	spawn,	  SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)") },
 };
 
 /* button definitions */
