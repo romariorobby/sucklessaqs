@@ -16,12 +16,19 @@
 static Block blocks[] = {
 /*      pathu                           pathc                                   interval        signal */
 //        { PATH("calendar"),          NULL,                                   30,             3},
-        { PATH("packages"),          PATH("packages_button"),                   0,              5},
-        { PATH("volume"),            PATH("volume_button"),                     0,              5},
-//        { PATH("cputemp"),          PATH("cputemp_button"),             1,              4},
+        { PATH("packages"),          PATH("packages"),                   0,              8},
+
+        { PATH("volume"),            PATH("volume"),                     0,              5},
+
+//        { PATH("mem"),               NULL,                               1,              4},
+
+        { PATH("cputemp"),           PATH("cputemp"),                    1,              3},
+
 //        { PATH("battery"),           PATH("battery_button"),              30,             2},
-        { PATH("clock"),             NULL,                                      1,              1},
-        { PATH("internet"),          PATH("internet_button"),                   5,              4},
+
+        { PATH("clock"),             PATH("clock"),                      1,              1},
+
+        { PATH("internet"),          PATH("internet"),                   5,              4},
 
         { NULL } /* just to mark the end of the array */
 };

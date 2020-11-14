@@ -1,5 +1,5 @@
-#PREFIX := /usr/local
-PREFIX := ${HOME}/.local
+PREFIX := /usr/local
+#PREFIX := ${HOME}/.local
 
 CC := gcc
 CFLAGS := -O3 -Wall -Wextra
