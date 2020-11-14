@@ -238,6 +238,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                                 7)
 	TAGKEYS(                        XK_9,                                 8)
 	{ MODKEY|ShiftMask,             XK_q,             quit,               {0} },
+	{ MODKEY|ShiftMask,             XK_Escape,        quit,               {0} },
 
 	{ MODKEY,			            XK_minus,		            spawn,	  SHCMD("pamixer --allow-boost -d 2; sigdwmblocks 5") },
 	{ MODKEY,			            XK_equal,		            spawn,	  SHCMD("pamixer --allow-boost -i 2; sigdwmblocks 5") },
