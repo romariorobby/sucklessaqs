@@ -5,4 +5,10 @@
 - Gruvbox
 - Blinkcursor
 - Externalpipe
+	- Copy url | dmenu
+	- Open Url | dmenu
 - Bold is not bright
+- Boxdraw 
+- Xresources
+- Alpha (/)
+- vertcenter
