@@ -24,7 +24,7 @@
 	- scratchpad[5] = `super + .` (-)
 	- scratchpad[6] = `super + /` (-)
 
-# TODOS
+# TODO::
 - [X] More layout 
 	- Spiral
 	- Dwindle
