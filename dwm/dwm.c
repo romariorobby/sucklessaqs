@@ -69,8 +69,9 @@
 #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
 #define TTEXTW(X)               (drw_fontset_getwidth(drw, (X)))
 
-#define DWMBLOCKSLOCKFILE       "/tmp/dwmblocks.pid"
-
+#define STATUSLENGTH                256
+#define DWMBLOCKSLOCKFILE           "/tmp/dwmblocks.pid"
+#define DELIMITERENDCHAR            11
 #define SYSTEM_TRAY_REQUEST_DOCK    0
 
 /* XEMBED messages */
@@ -316,8 +317,8 @@ static pid_t winpid(Window w);
 
 /* variables */
 static const char broken[] = "broken";
-static char stextc[256];
-static char stexts[256];
+static char stextc[STATUSLENGTH];
+static char stexts[STATUSLENGTH];
 static int screen;
 static int sw, sh;              /* X display screen geometry width, height */
 static int bh, blw, ble, stw;   /* bar geometry */
@@ -1028,7 +1029,7 @@ drawbar(Monitor *m)
                 x = wbar - wstext;
                 drw_rect(drw, x, 0, lrpad / 2, bh, 1, 1); x += lrpad / 2; /* to keep left padding clean */
                 for (;;) {
-                        if ((unsigned char)*ts > LENGTH(colors) + 10) {
+                        if ((unsigned char)*ts > LENGTH(colors) + DELIMITERENDCHAR) {
                                 ts++;
                                 continue;
                         }
@@ -1038,7 +1039,7 @@ drawbar(Monitor *m)
                                 x = drw_text(drw, x, 0, TTEXTW(tp), bh, 0, tp, 0);
                         if (ctmp == '\0')
                                 break;
-                        drw_setscheme(drw, scheme[ctmp - 11]);
+                        drw_setscheme(drw, scheme[ctmp - DELIMITERENDCHAR - 1]);
                         *ts = ctmp;
                         tp = ++ts;
                 }
@@ -2488,7 +2489,7 @@ updatedwmblockssig(int x)
         char ctmp;
 
         while (*ts != '\0') {
-                if ((unsigned char)*ts > 10) {
+                if ((unsigned char)*ts > DELIMITERENDCHAR) {
                         ts++;
                         continue;
                 }
@@ -2497,7 +2498,7 @@ updatedwmblockssig(int x)
                 x += TTEXTW(tp);
                 *ts = ctmp;
                 if (x >= 0) {
-                        if (ctmp == 10)
+                        if (ctmp == DELIMITERENDCHAR)
                                 goto cursorondelim;
                         if (!statushandcursor) {
                                 statushandcursor = 1;
@@ -2674,21 +2675,21 @@ updatesizehints(Client *c)
 void
 updatestatus(void)
 {
-	char rawstext[256];
+	char rawstext[STATUSLENGTH];
 
 	if (gettextprop(root, XA_WM_NAME, rawstext, sizeof rawstext)) {
-                char stextt[256];
-                char *stc = stextc, *sts = stexts, *stt = stextt;
+                char stextp[STATUSLENGTH];
+                char *stp = stextp, *stc = stextc, *sts = stexts;
 
-                for (char *rt = rawstext; *rt != '\0'; rt++)
-                        if ((unsigned char)*rt >= ' ')
-                                *(stc++) = *(sts++) = *(stt++) = *rt;
-                        else if ((unsigned char)*rt > 10)
-                                *(stc++) = *rt;
+                for (char *rst = rawstext; *rst != '\0'; rst++)
+                        if ((unsigned char)*rst >= ' ')
+                                *(stp++) = *(stc++) = *(sts++) = *rst;
+                        else if ((unsigned char)*rst > DELIMITERENDCHAR)
+                                *(stc++) = *rst;
                         else
-                                *(sts++) = *rt;
-                *stc = *sts = *stt = '\0';
-                wstext = TEXTW(stextt);
+                                *(sts++) = *rst;
+                *stp = *stc = *sts = '\0';
+                wstext = TEXTW(stextp);
         } else {
                 strcpy(stextc, "dwm-"VERSION);
                 strcpy(stexts, stextc);

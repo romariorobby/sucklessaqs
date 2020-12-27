@@ -9,8 +9,43 @@
 #define NILL                            INT_MIN
 #define LOCKFILE                        "/tmp/dwmblocks.pid"
 
+int
+parsesignal(char *arg, int *s)
+{
+        int i = 0;
+
+        for (; *arg != '\0'; arg++)
+                if (*arg >= '0' && *arg <= '9')
+                        i = 10 * i + *arg - '0';
+                else
+                        return 0;
+        if ((i += SIGRTMIN) > SIGRTMAX)
+                return 0;
+        *s = i;
+        return 1;
+}
+
+int
+parsesigval(char *arg, int *v)
+{
+        int s = 1, i = 0;
+
+        if (*arg == '-') {
+                s = -1;
+                arg++;
+        } else if (*arg == '+')
+                arg++;
+        for (; *arg != '\0'; arg++)
+                if (*arg >= '0' && *arg <= '9')
+                        i = 10 * i + *arg - '0';
+                else
+                        return 0;
+        *v = s * i;
+        return 1;
+}
+
 void
-sendsignal(int signum, union sigval sv)
+sendsignal(int sig, union sigval sv)
 {
         int fd;
         struct flock fl;
@@ -19,7 +54,7 @@ sendsignal(int signum, union sigval sv)
         if (fd == -1) {
                 if (errno == ENOENT) {
                         fputs("Error: no running instance of dwmblocks.\n", stderr);
-                        exit(2);
+                        exit(3);
                 }
                 perror("sendsignal - open");
                 exit(1);
@@ -34,15 +69,12 @@ sendsignal(int signum, union sigval sv)
         }
         if (fl.l_type == F_UNLCK) {
                 fputs("Error: no running instance of dwmblocks.\n", stderr);
-                exit(2);
+                exit(3);
         }
-        if (sigqueue(fl.l_pid, signum, sv) == -1) {
-                if (errno == EINVAL) {
-                        fputs("Error: invalid signal provided in argument.\n", stderr);
-                        exit(3);
-                } else if (errno == ESRCH) {
+        if (sigqueue(fl.l_pid, sig, sv) == -1) {
+                if (errno == ESRCH) {
                         fputs("Error: no running instance of dwmblocks.\n", stderr);
-                        exit(2);
+                        exit(3);
                 } else {
                         perror("sendsignal - sigqueue");
                         exit(1);
@@ -53,23 +85,19 @@ sendsignal(int signum, union sigval sv)
 int
 main(int argc, char *argv[])
 {
-        if (argc > 1) {
-                int signal;
-                union sigval sv;
+        int sig;
+        union sigval sv;
 
-                if (sscanf(argv[1], "%d", &signal) == 1 &&
-                    signal > 0 && (signal += SIGRTMIN) <= SIGRTMAX) {
-                        if (argc == 2) {
-                                sv.sival_int = INT_MIN;
-                                sendsignal(signal, sv);
-                                return 0;
-                        } else if (argc == 3 &&
-                                   sscanf(argv[2], "%d", &(sv.sival_int)) == 1) {
-                                sendsignal(signal, sv);
-                                return 0;
-                        }
+        if (argc > 1 && parsesignal(argv[1], &sig)) {
+                if (argc == 2) {
+                        sv.sival_int = NILL;
+                        sendsignal(sig, sv);
+                        return 0;
+                } else if (argc == 3 && parsesigval(argv[2], &(sv.sival_int))) {
+                        sendsignal(sig, sv);
+                        return 0;
                 }
         }
         fprintf(stderr, "Usage: %s <signal> [<sigval>]\n", argv[0]);
-        return 3;
+        return 2;
 }
