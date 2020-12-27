@@ -187,35 +187,35 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_BackSpace,     setcfact,           {.f =  0.00} },
 	{ MODKEY|ControlMask,           XK_h,             incrgaps,           {.i = +1 } },
 	{ MODKEY|ControlMask,           XK_l,             incrgaps,           {.i = -1 } },
-//	{ MODKEY|Mod4Mask,              XK_i,             incrigaps,          {.i = +1 } },
-//	{ MODKEY|Mod4Mask|ShiftMask,    XK_i,             incrigaps,          {.i = -1 } },
-//	{ MODKEY|Mod4Mask,              XK_o,             incrogaps,          {.i = +1 } },
-//	{ MODKEY|Mod4Mask|ShiftMask,    XK_o,             incrogaps,          {.i = -1 } },
-//	{ MODKEY|Mod4Mask,              XK_6,             incrihgaps,         {.i = +1 } },
-//	{ MODKEY|Mod4Mask|ShiftMask,    XK_6,             incrihgaps,         {.i = -1 } },
-//	{ MODKEY|Mod4Mask,              XK_7,             incrivgaps,         {.i = +1 } },
-//	{ MODKEY|Mod4Mask|ShiftMask,    XK_7,             incrivgaps,         {.i = -1 } },
-//	{ MODKEY|Mod4Mask,              XK_8,             incrohgaps,         {.i = +1 } },
-//	{ MODKEY|Mod4Mask|ShiftMask,    XK_8,             incrohgaps,         {.i = -1 } },
-//	{ MODKEY|Mod4Mask,              XK_9,             incrovgaps,         {.i = +1 } },
-//	{ MODKEY|Mod4Mask|ShiftMask,    XK_9,             incrovgaps,         {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_i,             incrigaps,          {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,             incrigaps,          {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_o,             incrogaps,          {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_o,             incrogaps,          {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_6,             incrihgaps,         {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_6,             incrihgaps,         {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_7,             incrivgaps,         {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_7,             incrivgaps,         {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_8,             incrohgaps,         {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_8,             incrohgaps,         {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_9,             incrovgaps,         {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_9,             incrovgaps,         {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_BackSpace,     defaultgaps,        {0} },
 	{ MODKEY,                       XK_Tab,           view,               {0} },
 	{ MODKEY,                       XK_q,             killclient,         {0} },
-	{ MODKEY,                       XK_t,             setlayout,          {.v = &layouts[0]} },
-	{ MODKEY|ShiftMask,             XK_t,             setlayout,          {.v = &layouts[1]} },
-	{ MODKEY,                       XK_y,             setlayout,          {.v = &layouts[2]} },
-	{ MODKEY,                       XK_u,             setlayout,          {.v = &layouts[3]} },
-	{ MODKEY,                       XK_i,             setlayout,          {.v = &layouts[4]} },
-	{ MODKEY,                       XK_y,             setlayout,          {.v = &layouts[5]} },
-	{ MODKEY,                       XK_y,             setlayout,          {.v = &layouts[6]} },
-	{ MODKEY,                       XK_F1,            setlayout,          {.v = &layouts[7]} },
-	{ MODKEY,                       XK_F2,            setlayout,          {.v = &layouts[8]} },
-	{ MODKEY,                       XK_F3,            setlayout,          {.v = &layouts[9]} },
-	{ MODKEY,                       XK_F4,            setlayout,          {.v = &layouts[10]} },
-	{ MODKEY,                       XK_F5,            setlayout,          {.v = &layouts[11]} },
-	{ MODKEY,                       XK_F6,            setlayout,          {.v = &layouts[12]} },
-//	{ MODKEY,                       XK_y,             setlayout,          {0} },
+	{ MODKEY,                       XK_t,             setlayout,          {.v = &layouts[0]} }, /* tile */
+	{ MODKEY,                       XK_y,             setlayout,          {.v = &layouts[1]} }, /* Monocle */
+	{ MODKEY|ShiftMask,             XK_y,             setlayout,          {.v = &layouts[2]} }, /* Spiral */
+	{ MODKEY|ControlMask,           XK_y,             setlayout,          {.v = &layouts[3]} }, /* Dwindle */
+	{ MODKEY|Mod1Mask,              XK_y,             setlayout,          {.v = &layouts[4]} }, /* Deck */ 
+	{ MODKEY,                       XK_u,             setlayout,          {.v = &layouts[5]} }, /* Bstack*/
+	{ MODKEY|ShiftMask,             XK_u,             setlayout,          {.v = &layouts[6]} }, /* Bstack Horizontal */
+	{ MODKEY|ControlMask,           XK_u,             setlayout,          {.v = &layouts[7]} }, /* Grid */
+	{ MODKEY|Mod1Mask,              XK_u,             setlayout,          {.v = &layouts[8]} }, /* nrowgrid */
+	{ MODKEY,                       XK_i,             setlayout,          {.v = &layouts[9]} }, /* horizontal grid */
+	{ MODKEY|ShiftMask,             XK_i,             setlayout,          {.v = &layouts[10]} }, /* gaplessgrid */
+	{ MODKEY|ControlMask,           XK_i,             setlayout,          {.v = &layouts[11]} }, /* centeredmaster */
+	{ MODKEY|Mod1Mask,              XK_i,             setlayout,          {.v = &layouts[12]} }, /* Centered Floating Master */
+//	{ MODKEY|ShiftMask,             XK_t,             setlayout,          {0} },
 	{ MODKEY,                       XK_0,             view,               {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,             tag,                {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,         focusmon,           {.i = -1 } },
@@ -227,7 +227,10 @@ static Key keys[] = {
 	{ MODKEY,            			XK_z,  	          togglescratch,      {.ui = 0 } },
 	{ MODKEY,            			XK_x,	          togglescratch,      {.ui = 1 } },
 	{ MODKEY,            			XK_c,	          togglescratch,      {.ui = 2 } },
-	{ MODKEY,			            XK_F10,		      spawn,		      SHCMD(TERMINAL "-e pulsemixer; sigdwmblocks 5") },
+	{ MODKEY|ControlMask,			XK_space,		  spawn,		      SHCMD("dmenuunicode") },
+	{ MODKEY|ShiftMask,             XK_q,			  spawn,			  SHCMD("sysact") },
+//	{ MODKEY|ShiftMask,             XK_q,             quit,               {0} },
+	{ MODKEY|ShiftMask,             XK_Escape,        quit,               {0} },
 	TAGKEYS(                        XK_1,                                 0)
 	TAGKEYS(                        XK_2,                                 1)
 	TAGKEYS(                        XK_3,                                 2)
@@ -237,35 +240,61 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                                 6)
 	TAGKEYS(                        XK_8,                                 7)
 	TAGKEYS(                        XK_9,                                 8)
-	{ MODKEY|ShiftMask,             XK_q,             quit,               {0} },
-	{ MODKEY|ShiftMask,             XK_Escape,        quit,               {0} },
-
-	{ MODKEY,			            XK_minus,		            spawn,	  SHCMD("pamixer --allow-boost -d 2; sigdwmblocks 5") },
-	{ MODKEY,			            XK_equal,		            spawn,	  SHCMD("pamixer --allow-boost -i 2; sigdwmblocks 5") },
-	{ 0,                            XF86XK_AudioMute,		    spawn,	  SHCMD("pamixer -t; sigdwmblocks 5") },
-	{ 0,                            XF86XK_AudioRaiseVolume,	spawn,	  SHCMD("pamixer --allow-boost -i 3; sigdwmblocks 5") },
-	{ 0,                            XF86XK_AudioLowerVolume,	spawn,	  SHCMD("pamixer --allow-boost -d 3; sigdwmblocks 5") },
+// Apps
+	{ MODKEY,                       XK_w,			  spawn,			  SHCMD("$BROWSER") },
+	{ MODKEY,                       XK_m,			  spawn,			  SHCMD("spotify") },
+	{ MODKEY,                       XK_n,			  spawn,			  SHCMD(TERMINAL " -e nvim ~/Dropbox/org/index.md") },
+	{ MODKEY|ShiftMask,             XK_n,			  spawn,			  SHCMD("notion-app") },
+	{ MODKEY|ControlMask,           XK_n,			  spawn,			  SHCMD("obsidian") },
+	{ MODKEY|Mod1Mask,              XK_n,			  spawn,			  SHCMD("remnote") },
+// MOD + F{N}
+	{ MODKEY,			            XK_F1,		                spawn,	  SHCMD("groff -mom /usr/local/share/dwm/info.mom -Tpdf | zathura -") },
+	{ MODKEY,			            XK_F2,		                spawn,	  SHCMD(TERMINAL " -e pulsemixer") },
+	{ MODKEY,			            XK_F3,		                spawn,	  SHCMD(TERMINAL " -e pavucontrol") },
+	{ MODKEY,			            XK_F8,		                spawn,	  SHCMD(TERMINAL " -e sudo nmtui") },
+	{ MODKEY,			            XK_F10,		                spawn,	  {.v = dmenucmd } },
+	{ MODKEY,			            XK_F11,		                spawn,	  SHCMD("mpv --no-cache --no-osc --no-input-default-bindings --input-conf=/dev/null --title=webcam $(ls /dev/video[0,2,4,6,8] | tail -n 1)") },
+	{ MODKEY,			            XK_F12,		                spawn,	  SHCMD("mw -Y") },
+	{ MODKEY,			            XK_Print,		            spawn,	  SHCMD("maimpick") },
+	{ 0,			                XK_Print,		            spawn,	  SHCMD("maim pic-full-$(date '+%d%m%y-%H%M-%s').png") },
+// Multimedia Keys
+	{ MODKEY,			            XK_minus,		            spawn,	  SHCMD("pamixer --allow-boost -d 2; sigdwmblocks 7") },
+	{ MODKEY,			            XK_equal,		            spawn,	  SHCMD("pamixer --allow-boost -i 2; sigdwmblocks 7") },
+	{ 0,			                XF86XK_Display,		        spawn,	  SHCMD("displayselect") },
+	{ 0,                            XF86XK_AudioMute,		    spawn,	  SHCMD("pamixer -t; sigdwmblocks 7") },
+//	{ 0,                            XF86XK_TaskPane,		    spawn,    SHCMD(TERMINAL " -e htop") },
+//	{ 0,                            XF86XK_MyComputer,		    spawn,	  SHCMD(TERMINAL " -e lf /") },
+//	{ 0,                            XF86XK_AudioMicMute,		spawn,	  SHCMD("pamixer --default-source -t; sigdwmblocks 7") },
+//	{ 0,                            XF86XK_PowerOff,		    spawn,    SHCMD("sysact") },
+	{ 0,                            XF86XK_AudioRaiseVolume,	spawn,	  SHCMD("pamixer --allow-boost -i 3; sigdwmblocks 7; sigdwmblocks 2") },
+	{ 0,                            XF86XK_AudioLowerVolume,	spawn,	  SHCMD("pamixer --allow-boost -d 3; sigdwmblocks 7; sigdwmblocks 2") },
+	{ 0,                            XF86XK_MonBrightnessUp,		spawn,	  SHCMD("xbacklight -inc 5") },
+	{ 0,                            XF86XK_MonBrightnessDown,	spawn,	  SHCMD("xbacklight -dec 5") },
 };
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
 	{ ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 2} },
 	{ ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
 	{ ClkStatusText,        0,              Button4,        sigdwmblocks,   {.i = 4} },
 	{ ClkStatusText,        0,              Button5,        sigdwmblocks,   {.i = 5} },
 	{ ClkStatusText,        ShiftMask,      Button1,        sigdwmblocks,   {.i = 6} },
+	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+	{ ClkStatusText,        ShiftMask,      Button3,        spawn,          SHCMD(TERMINAL " -e nvim ~/.local/src/yadav-dwmblocks/blocks.h") },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+	{ ClkClientWin,		    MODKEY,		    Button4,	    incrgaps,	    {.i = +1} },
+	{ ClkClientWin,		    MODKEY,		    Button5,	    incrgaps,	    {.i = -1} },
 	{ ClkClientWin,         MODKEY,         Button2,        defaultgaps,    {0} },
 	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkRootWin,		    0,		        Button2,	    togglebar,	    {0} },
+//	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 };
 

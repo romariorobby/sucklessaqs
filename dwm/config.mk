@@ -5,7 +5,7 @@ VERSION = 6.2
 
 # paths
 PREFIX = /usr/local
-XSPREFIX = /usr/share/xsessions
+XSPREFIX = /usr/share
 MANPREFIX = ${PREFIX}/share/man
 
 X11INC = /usr/X11R6/include

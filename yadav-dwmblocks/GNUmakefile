@@ -8,7 +8,7 @@ CFLAGSEXTRA := -Wno-missing-field-initializers -Wno-unused-parameter
 X11CFLAGS := $(shell pkg-config --cflags x11)
 X11LIBS := $(shell pkg-config --libs x11)
 
-all: dwmblocks sigdwmblocks
+all: dwmblocks sigdwmblocks xgetrootname
 
 dwmblocks: dwmblocks.c blocks.h
 	${CC} -o $@ ${CFLAGS} ${CFLAGSEXTRA} ${X11CFLAGS} $< ${X11LIBS}
@@ -20,7 +20,7 @@ xgetrootname: xgetrootname.c
 	${CC} -o $@ ${CFLAGS} ${X11CFLAGS} $< ${X11LIBS}
 
 clean:
-	rm -f dwmblocks sigdwmblocks
+	rm -f dwmblocks sigdwmblocks xgetrootname
 
 install: all
 	mkdir -p ${DESTDIR}${PREFIX}/bin

@@ -1,3 +1,8 @@
 dmenu
 stest
+dmenu
+stest
+*.orig
+*.rej
+patches
 *.o
