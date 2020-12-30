@@ -608,13 +608,13 @@ swallow(Client *p, Client *c)
 	p->win = c->win;
 	c->win = w;
 	updatetitle(p);
-	// TODO:: check commit from luke (fix border redraw)
-	//XWindowChanges wc;
-	//wc.border_width = p->bw;
+	 /* TODO:: check commit from luke (fix border redraw) */
+	XWindowChanges wc;
+	wc.border_width = p->bw;
 	XConfigureWindow(dpy, p->win,CWBorderWidth, &wc);
-	// defaults 
-	//XMoveResizeWindow(dpy, p->win, p->x, p->y, p->w, p->h);
-	// luke
+	 /* defaults */ 
+	XMoveResizeWindow(dpy, p->win, p->x, p->y, p->w, p->h);
+	 /* still luke patch */
 	XSetWindowBorder(dpy, p->win, scheme[SchemeNorm][ColBorder].pixel);
 
 	arrange(p->mon);
@@ -635,7 +635,17 @@ unswallow(Client *c)
 	updatetitle(c);
 	arrange(c->mon);
 	XMapWindow(dpy, c->win);
+
+
+	/* Luke patch */
+	XWindowChanges wc;
+	wc.border_width = c->bw;
+	XConfigureWindow(dpy, c->win,CWBorderWidth, &wc);
+	/* Defaults */
 	XMoveResizeWindow(dpy, c->win, c->x, c->y, c->w, c->h);
+	/* still luke */	
+	XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
+
 	setclientstate(c, NormalState);
 	focus(NULL);
 	arrange(c->mon);
