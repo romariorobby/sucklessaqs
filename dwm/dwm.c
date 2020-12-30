@@ -71,7 +71,7 @@
 
 #define STATUSLENGTH                256
 #define DWMBLOCKSLOCKFILE           "/tmp/dwmblocks.pid"
-#define DELIMITERENDCHAR            11
+#define DELIMITERENDCHAR            15
 #define SYSTEM_TRAY_REQUEST_DOCK    0
 
 /* XEMBED messages */
@@ -168,6 +168,7 @@ struct Monitor {
 	unsigned int tagset[2];
 	int showbar;
 	int topbar;
+        int statushandcursor;
 	Client *clients;
 	Client *sel;
 	Client *stack;
@@ -324,8 +325,8 @@ static int sw, sh;              /* X display screen geometry width, height */
 static int bh, blw, ble, stw;   /* bar geometry */
 static int lrpad;               /* sum of left and right padding for text */
 static int (*xerrorxlib)(Display *, XErrorEvent *);
-static int statushandcursor;
-static int wstext;
+static int wsbar;               /* width of selmon bar */
+static int wstext;              /* width of status text*/
 static unsigned int dwmblockssig;
 static unsigned int numlockmask = 0;
 static void (*handler[LASTEvent]) (XEvent *) = {
@@ -607,7 +608,15 @@ swallow(Client *p, Client *c)
 	p->win = c->win;
 	c->win = w;
 	updatetitle(p);
-	XMoveResizeWindow(dpy, p->win, p->x, p->y, p->w, p->h);
+	// TODO:: check commit from luke (fix border redraw)
+	//XWindowChanges wc;
+	//wc.border_width = p->bw;
+	XConfigureWindow(dpy, p->win,CWBorderWidth, &wc);
+	// defaults 
+	//XMoveResizeWindow(dpy, p->win, p->x, p->y, p->w, p->h);
+	// luke
+	XSetWindowBorder(dpy, p->win, scheme[SchemeNorm][ColBorder].pixel);
+
 	arrange(p->mon);
 	configure(p);
 	updateclientlist();
@@ -649,27 +658,22 @@ buttonpress(XEvent *e)
 		focus(NULL);
 	}
  	if (ev->window == selmon->barwin) {
-                if (ev->x < ble) {
-                        if (ev->x < ble - blw) {
-                                i = -1, x = -ev->x;
-                                do
-                                        x += TEXTW(tags[++i]);
-                                while (x <= 0);
-                                click = ClkTagBar;
-                                arg.ui = 1 << i;
-                        } else
-                                click = ClkLtSymbol;
-                } else {
-                        int wbar = showsystray && selmon == systraytomon(selmon) ? selmon->ww - stw : selmon->ww;
-
-                        if (ev->x < wbar - wstext)
-                                click = ClkWinTitle;
-                        else if ((x = wbar - lrpad / 2 - ev->x) > 0 && (x -= wstext - lrpad) <= 0) {
-                                updatedwmblockssig(x);
-                                click = ClkStatusText;
-                        } else
+                if (ev->x < ble - blw) {
+                        i = -1, x = -ev->x;
+                        do
+                                x += TEXTW(tags[++i]);
+                        while (x <= 0);
+                        click = ClkTagBar;
+                        arg.ui = 1 << i;
+                } else if (ev->x < ble)
+                        click = ClkLtSymbol;
+                else if (ev->x < wsbar - wstext)
+                        click = ClkWinTitle;
+                else if ((x = wsbar - lrpad / 2 - ev->x) > 0 && (x -= wstext - lrpad) <= 0) {
+                        updatedwmblockssig(x);
+                        click = ClkStatusText;
+                } else
                                 return;
-                }
 	} else if ((c = wintoclient(ev->window))) {
 		focus(c);
 		restack(selmon);
@@ -1017,31 +1021,34 @@ drawbar(Monitor *m)
 	Client *c;
 
         if (showsystray && m == systraytomon(m))
-                wbar -= (stw = getsystraywidth());
+                wbar -= getsystraywidth();
 
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
-                char *ts = stextc;
-                char *tp = stextc;
-                char ctmp;
+                char *stc = stextc;
+                char *stp = stextc;
+                char tmp;
 
+                wsbar = wbar;
                 drw_setscheme(drw, scheme[SchemeNorm]);
                 x = wbar - wstext;
                 drw_rect(drw, x, 0, lrpad / 2, bh, 1, 1); x += lrpad / 2; /* to keep left padding clean */
                 for (;;) {
-                        if ((unsigned char)*ts > LENGTH(colors) + DELIMITERENDCHAR) {
-                                ts++;
+                        if ((unsigned char)*stc >= ' ') {
+                                stc++;
                                 continue;
                         }
-                        ctmp = *ts;
-                        *ts = '\0';
-                        if (*tp != '\0')
-                                x = drw_text(drw, x, 0, TTEXTW(tp), bh, 0, tp, 0);
-                        if (ctmp == '\0')
-                                break;
-                        drw_setscheme(drw, scheme[ctmp - DELIMITERENDCHAR - 1]);
-                        *ts = ctmp;
-                        tp = ++ts;
+                        tmp = *stc;
+						if (stp != stc) {
+								*stc = '\0';
+								x = drw_text(drw, x, 0, TTEXTW(stp), bh, 0, stp, 0);
+						}
+                        if (tmp == '\0')
+								break;
+                        if (tmp - DELIMITERENDCHAR - 1 < LENGTH(colors))
+								drw_setscheme(drw, scheme[tmp - DELIMITERENDCHAR - 1]);
+                        *stc = tmp;
+                        stp = ++stc;
                 }
                 drw_setscheme(drw, scheme[SchemeNorm]);
                 drw_rect(drw, x, 0, wbar - x, bh, 1, 1); /* to keep right padding clean */
@@ -1515,6 +1522,7 @@ void
 motionnotify(XEvent *e)
 {
 	static Monitor *mon = NULL;
+        int x;
 	Monitor *m;
 	XMotionEvent *ev = &e->xmotion;
 
@@ -1525,20 +1533,14 @@ motionnotify(XEvent *e)
                         focus(NULL);
                 }
                 mon = m;
-        } else if (ev->window == selmon->barwin) {
-                int x = selmon->ww - lrpad / 2 - ev->x;
-
-                if (showsystray && selmon == systraytomon(selmon))
-                        x -= stw;
-                if (ev->x >= ble && x > 0 && (x -= wstext - lrpad) <= 0)
+        } else if (ev->window == selmon->barwin && (x = wsbar - lrpad / 2 - ev->x) > 0
+                                                && (x -= wstext - lrpad) <= 0)
                         updatedwmblockssig(x);
-                else if (statushandcursor) {
-                        statushandcursor = 0;
+                else if (selmon->statushandcursor) {
+                        selmon->statushandcursor = 0;
                         XDefineCursor(dpy, selmon->barwin, cursor[CurNormal]->cursor);
                 }
-        }
 }
-
 void
 movemouse(const Arg *arg)
 {
@@ -2163,11 +2165,11 @@ sigdwmblocks(const Arg *arg)
 {
         int fd;
         struct flock fl;
-	union sigval sv;
+        union sigval sv;
 
         if (!dwmblockssig)
                 return;
-	sv.sival_int = (dwmblockssig << 8) | arg->i;
+        sv.sival_int = (dwmblockssig << 8) | arg->i;
         fd = open(DWMBLOCKSLOCKFILE, O_RDONLY);
         if (fd == -1)
                 return;
@@ -2484,34 +2486,33 @@ updateclientlist()
 void
 updatedwmblockssig(int x)
 {
-        char *ts = stexts;
-        char *tp = stexts;
-        char ctmp;
+        char *sts = stexts;
+        char *stp = stexts;
+        char tmp;
 
-        while (*ts != '\0') {
-                if ((unsigned char)*ts > DELIMITERENDCHAR) {
-                        ts++;
+        do {
+                if ((unsigned char)*sts >= ' ') {
+                        sts++;
                         continue;
                 }
-                ctmp = *ts;
-                *ts = '\0';
-                x += TTEXTW(tp);
-                *ts = ctmp;
-                if (x >= 0) {
-                        if (ctmp == DELIMITERENDCHAR)
-                                goto cursorondelim;
-                        if (!statushandcursor) {
-                                statushandcursor = 1;
+                tmp = *sts;
+                *sts = '\0';
+                x += TTEXTW(stp);
+                *sts = tmp;
+                if (x > 0) {
+                        if (tmp == DELIMITERENDCHAR)
+                                break;
+                        if (!selmon->statushandcursor) {
+                                selmon->statushandcursor = 1;
                                 XDefineCursor(dpy, selmon->barwin, cursor[CurHand]->cursor);
                         }
-                        dwmblockssig = ctmp;
+                        dwmblockssig = tmp;
                         return;
                 }
-                tp = ++ts;
-        }
-cursorondelim:
-        if (statushandcursor) {
-                statushandcursor = 0;
+                stp = ++sts;
+        } while (*sts != '\0');
+        if (selmon->statushandcursor) {
+                selmon->statushandcursor = 0;
                 XDefineCursor(dpy, selmon->barwin, cursor[CurNormal]->cursor);
         }
         dwmblockssig = 0;

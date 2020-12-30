@@ -13,6 +13,7 @@
 - vanitygaps
 	- `super + ctrl + h / l ` and `super + ctrl + backspace` to reset 
 - pertag 
+- focusonnetactive
 - [dwmblocks](https://github.com/romariorobby/sucklessaqs/tree/master/dwmblocks)
 	- [my dwmblocks sripts](https://github.com/romariorobby/dotfiles/tree/main/dot_local/bin/blocks)
 - swallow

@@ -3,7 +3,7 @@
 #define TERMINAL "st"
 #define TERMCLASS "St"
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
@@ -30,14 +30,14 @@ static const char col_green[]       = "#b8bb26";
 static const char col_blue[]        = "#458588";
 static const char col_white[]       = "#ffffff";
 static const char col_yellow[]      = "#fabd2f";
-static const char col6[]            = "#ffffff";
-static const char col7[]            = "#ffffff";
-static const char col8[]            = "#ffffff";
-static const char col9[]            = "#ffffff";
-static const char col10[]           = "#ffffff";
-static const char col11[]           = "#ffffff";
-static const char col12[]           = "#ffffff";
-static const char *colors[][17]      = {
+//static const char col6[]            = "#ffffff";
+//static const char col7[]            = "#ffffff";
+//static const char col8[]            = "#ffffff";
+//static const char col9[]            = "#ffffff";
+//static const char col10[]           = "#ffffff";
+//static const char col11[]           = "#ffffff";
+//static const char col12[]           = "#ffffff";
+static const char *colors[][10]      = {
 //	/*               fg         bg         border   */
 //	[SchemeNorm]  = { col_gray3, col_gray1, col_gray2 },
 //	[SchemeCol1]  = { col1,      col_gray1, col_gray2 },
@@ -104,7 +104,7 @@ static const Rule rules[] = {
 	{ "Gimp",             NULL,          NULL,           0,              1,          0,           0,        -1 },
 	{ "Firefox",          NULL,          NULL,           1 << 8,         0,          0,          -1,        -1 },
 	{ "brave-browser",    NULL,          NULL,           1 << 8,         0,          0,          -1,        -1 },
-	{ "st",               NULL,          NULL,           0,              0,          1,           0,        -1 },
+	{ TERMINAL,           NULL,          NULL,           0,              0,          1,           0,        -1 },
 	{ TERMCLASS,          NULL,          NULL,           0,              0,          1,           0,        -1 },
 	{ NULL,               NULL,          "Event Tester", 0,              0,          0,           1,        -1 }, /* xev */
 	{ NULL,		          "spterm",	     NULL,		     SPTAG(0),		 1,		     1,           0,        -1 },
@@ -128,7 +128,7 @@ static const Layout layouts[] = {
 	{ "[M]",      monocle },
 	{ "[@]",      spiral },
 	{ "[\\]",     dwindle },
-	{ "H[]",      deck },
+	{ "[D]",      deck },
 	{ "TTT",      bstack },
 	{ "===",      bstackhoriz },
 	{ "HHH",      grid },
@@ -242,6 +242,9 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                                 8)
 // Apps
 	{ MODKEY,                       XK_w,			  spawn,			  SHCMD("$BROWSER") },
+	{ MODKEY|ShiftMask,			    XK_w,		      spawn,	          SHCMD("networkmanager_dmenu") },
+	{ MODKEY,                       XK_r,			  spawn,			  SHCMD(TERMINAL " -e newsboat ; sigdwmblocks 10") },
+	{ MODKEY,                       XK_e,			  spawn,			  SHCMD(TERMINAL " -e neomutt ; sigdwmblocks 6") },
 	{ MODKEY,                       XK_m,			  spawn,			  SHCMD("spotify") },
 	{ MODKEY,                       XK_n,			  spawn,			  SHCMD(TERMINAL " -e nvim ~/Dropbox/org/index.md") },
 	{ MODKEY|ShiftMask,             XK_n,			  spawn,			  SHCMD("notion-app") },
@@ -251,23 +254,26 @@ static Key keys[] = {
 	{ MODKEY,			            XK_F1,		                spawn,	  SHCMD("groff -mom /usr/local/share/dwm/info.mom -Tpdf | zathura -") },
 	{ MODKEY,			            XK_F2,		                spawn,	  SHCMD(TERMINAL " -e pulsemixer") },
 	{ MODKEY,			            XK_F3,		                spawn,	  SHCMD(TERMINAL " -e pavucontrol") },
-	{ MODKEY,			            XK_F8,		                spawn,	  SHCMD(TERMINAL " -e sudo nmtui") },
+	{ MODKEY,			            XK_F8,		                spawn,	  SHCMD(TERMINAL " -e networkmanager_dmenu") },
 	{ MODKEY,			            XK_F10,		                spawn,	  {.v = dmenucmd } },
-	{ MODKEY,			            XK_F11,		                spawn,	  SHCMD("mpv --no-cache --no-osc --no-input-default-bindings --input-conf=/dev/null --title=webcam $(ls /dev/video[0,2,4,6,8] | tail -n 1)") },
-	{ MODKEY,			            XK_F12,		                spawn,	  SHCMD("mw -Y") },
+	{ MODKEY,			            XK_F11,		                spawn,	  SHCMD("mpv --no-cache --no-osc --no-input-default-bindings --profile=low-latency --input-conf=/dev/null --title=webcam $(ls /dev/video[0,2,4,6,8] | tail -n 1)") },
+	{ MODKEY,			            XK_F12,		                spawn,	  SHCMD("mw -Y; sigdwmblocks 6") },
 	{ MODKEY,			            XK_Print,		            spawn,	  SHCMD("maimpick") },
+	{ MODKEY,			            XK_Home,		            spawn,	  SHCMD("dmenumount") },
+	{ MODKEY,			            XK_End,		                spawn,	  SHCMD("dmenuumount") },
 	{ 0,			                XK_Print,		            spawn,	  SHCMD("maim pic-full-$(date '+%d%m%y-%H%M-%s').png") },
 // Multimedia Keys
-	{ MODKEY,			            XK_minus,		            spawn,	  SHCMD("pamixer --allow-boost -d 2; sigdwmblocks 7") },
-	{ MODKEY,			            XK_equal,		            spawn,	  SHCMD("pamixer --allow-boost -i 2; sigdwmblocks 7") },
+	{ MODKEY,			            XK_minus,		            spawn,	  SHCMD("pamixer --allow-boost -d 2; sigdwmblocks 5") },
+	{ MODKEY,			            XK_equal,		            spawn,	  SHCMD("pamixer --allow-boost -i 2; sigdwmblocks 5") },
 	{ 0,			                XF86XK_Display,		        spawn,	  SHCMD("displayselect") },
-	{ 0,                            XF86XK_AudioMute,		    spawn,	  SHCMD("pamixer -t; sigdwmblocks 7") },
+	{ 0,                            XF86XK_AudioMute,		    spawn,	  SHCMD("pamixer -t; sigdwmblocks 5") },
 //	{ 0,                            XF86XK_TaskPane,		    spawn,    SHCMD(TERMINAL " -e htop") },
 //	{ 0,                            XF86XK_MyComputer,		    spawn,	  SHCMD(TERMINAL " -e lf /") },
-//	{ 0,                            XF86XK_AudioMicMute,		spawn,	  SHCMD("pamixer --default-source -t; sigdwmblocks 7") },
+//	{ 0,                            XF86XK_AudioMicMute,		spawn,	  SHCMD("pamixer --default-source -t; sigdwmblocks 5") },
+//	{ 0,                            XF86XK_ScreenSaver,	        spawn,	  SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
 //	{ 0,                            XF86XK_PowerOff,		    spawn,    SHCMD("sysact") },
-	{ 0,                            XF86XK_AudioRaiseVolume,	spawn,	  SHCMD("pamixer --allow-boost -i 3; sigdwmblocks 7; sigdwmblocks 2") },
-	{ 0,                            XF86XK_AudioLowerVolume,	spawn,	  SHCMD("pamixer --allow-boost -d 3; sigdwmblocks 7; sigdwmblocks 2") },
+	{ 0,                            XF86XK_AudioRaiseVolume,	spawn,	  SHCMD("pamixer --allow-boost -i 3; sigdwmblocks 5") },
+	{ 0,                            XF86XK_AudioLowerVolume,	spawn,	  SHCMD("pamixer --allow-boost -d 3; sigdwmblocks 5") },
 	{ 0,                            XF86XK_MonBrightnessUp,		spawn,	  SHCMD("xbacklight -inc 5") },
 	{ 0,                            XF86XK_MonBrightnessDown,	spawn,	  SHCMD("xbacklight -dec 5") },
 };

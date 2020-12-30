@@ -9,7 +9,7 @@
    defined in colors array in dwm's config.h and so on.
  * If you wish to change DELIMITERENDCHAR, don't forget to update its value in
    dwm.c and color codes in your pathu programs. */
-#define DELIMITERENDCHAR                11
+#define DELIMITERENDCHAR                16
 
 /* If interval of a block is set to 0, the block will only be updated once at
    startup.
@@ -32,27 +32,34 @@
 #define INTERVALn                       0
 static Block blocks[] = {
 /*      pathu                           pathc                                   interval        signal */
-//        { PATH("sb-packages"),          PATH("sb-packages"),                   0,              8},
+        { PATH("sb-packages"),          PATH("sb-packages"),                   0,              9},
 
-        { PATH("sb-forecast"),          PATH("sb-forecast"),                   18000,          5},
+        { PATH("sb-news"),              PATH("sb-news"),                       0,              10},
+
+        { PATH("sb-torrent"),           PATH("sb-torrent"),                    20,             12},
+
+        { PATH("sb-forecast"),          PATH("sb-forecast"),                   18000,          7},
 
         { PATH("sb-mailbox"),           PATH("sb-mailbox"),                    180,            6},
 
-        { PATH("sb-volume"),            PATH("sb-volume"),                     0,              7},
+        { PATH("sb-volume"),            PATH("sb-volume"),                     0,              5},
 
         { PATH("sb-disk"),              PATH("sb-disk"),                       0,              8},
 
         { PATH("sb-cputemp"),           PATH("sb-cputemp"),                    1,              3},
 
-        { PATH("sb-battery"),           PATH("sb-battery"),                    30,             2},
+        { PATH("sb-battery"),           PATH("sb-battery"),                    5,              2},
 
-        { PATH("sb-clock"),             PATH("sb-clock"),                      1,              1},
+        { PATH("sb-clock"),             PATH("sb-clock"),                      60,             1},
 
-        { PATH("sb-nettraf"),           PATH("sb-nettraf"),                    1,              10},
+        { PATH("sb-tasks"),             PATH("sb-tasks"),                      10,             13},
+
+        { PATH("sb-nettraf"),           PATH("sb-nettraf"),                    1,              11},
 
         { PATH("sb-internet"),          PATH("sb-internet"),                   5,              4},
 
-        { PATH("sb-help-icon"),         PATH("sb-help-icon"),                  0,              9},
+        { PATH("sb-help-icon"),         PATH("sb-help-icon"),                  0,              14},
+
 //        { PATH("calendar"),          NULL,                                   30,             3},
 
         { NULL } /* just to mark the end of the array */

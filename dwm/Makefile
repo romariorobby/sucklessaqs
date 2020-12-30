@@ -51,7 +51,7 @@ install: all
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
-		${DESTDIR}${XSPREFIX}/share/dwm/info.mom
+		${DESTDIR}${XSPREFIX}/share/dwm/info.mom\
 		${DESTDIR}${MANPREFIX}/man1/dwm.1\
 		$(DESTDIR)$(XSPREFIX)/xsessions/dwm.desktop
 

@@ -2,3 +2,4 @@
 - Center 
 - Fuzzyhighlight
 - Fuzzymatch
+- Password
