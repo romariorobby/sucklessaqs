@@ -18,7 +18,7 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10","Hack Nerd Font:size=10", "Hasklug Nerd Font:size=10", "Siji:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true" };
+static const char *fonts[]          = { "monospace:size=10","JoyPixels:pixelsize=10:antialias=true:autohint=true","Siji:size=10","AppleEmoji:pixelsize=10:antialias=true:autohint=true","Hack Nerd Font:size=10", "Hasklug Nerd Font:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_bg[]          = "#141414";
@@ -93,7 +93,7 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "", "8", "9" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "8" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -103,7 +103,11 @@ static const Rule rules[] = {
 	/* class           instance       title           tags mask       isfloating  isterminal  noswallow  monitor */
 	{ "Gimp",             NULL,          NULL,           0,              1,          0,           0,        -1 },
 	{ "Firefox",          NULL,          NULL,           1 << 8,         0,          0,          -1,        -1 },
-	{ "brave-browser",    NULL,          NULL,           1 << 8,         0,          0,          -1,        -1 },
+	{ "Brave-browser",    NULL,          NULL,           1 << 2,         0,          0,          -1,        -1 },
+	{ "Rambox",           NULL,          NULL,           1 << 5,         0,          0,          -1,        -1 },
+	{ "Spotify",          NULL,          NULL,           4,              0,          0,          -1,        -1 },
+	{ "Notion",           NULL,          NULL,           2,              0,          0,          -1,        -1 },
+	{ "obsidian",         NULL,          NULL,           2,              0,          0,          -1,        -1 },
 	{ TERMINAL,           NULL,          NULL,           0,              0,          1,           0,        -1 },
 	{ TERMCLASS,          NULL,          NULL,           0,              0,          1,           0,        -1 },
 	{ NULL,               NULL,          "Event Tester", 0,              0,          0,           1,        -1 }, /* xev */
@@ -167,7 +171,8 @@ static const char *termcmd[]  = { TERMINAL, NULL };
 
 static Key keys[] = {
 	/* modifier                     key               function            argument */
-	{ MODKEY|ShiftMask,             XK_Return,        spawn,              {.v = dmenucmd } },
+	/* { MODKEY|ShiftMask,             XK_Return,        spawn,              {.v = dmenucmd } }, */
+	{ MODKEY|ShiftMask,             XK_Return,        spawn,              SHCMD("dmenu_run") },
 	{ MODKEY,			            XK_Return,        spawn,              {.v = termcmd } },
 	{ MODKEY,                       XK_b,             togglebar,          {0} },
 	{ MODKEY|ShiftMask,             XK_b,             togglesystray,      {0} },
@@ -216,8 +221,8 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,           XK_i,             setlayout,          {.v = &layouts[11]} }, /* centeredmaster */
 	{ MODKEY|Mod1Mask,              XK_i,             setlayout,          {.v = &layouts[12]} }, /* Centered Floating Master */
 //	{ MODKEY|ShiftMask,             XK_t,             setlayout,          {0} },
-	{ MODKEY,                       XK_0,             view,               {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,             tag,                {.ui = ~0 } },
+	{ MODKEY,                       XK_grave,         view,               {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_grave,         tag,                {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,         focusmon,           {.i = -1 } },
 	{ MODKEY,                       XK_period,        focusmon,           {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,         tagmon,             {.i = -1 } },
@@ -254,14 +259,14 @@ static Key keys[] = {
 	{ MODKEY,			            XK_F1,		                spawn,	  SHCMD("groff -mom /usr/local/share/dwm/info.mom -Tpdf | zathura -") },
 	{ MODKEY,			            XK_F2,		                spawn,	  SHCMD(TERMINAL " -e pulsemixer") },
 	{ MODKEY,			            XK_F3,		                spawn,	  SHCMD(TERMINAL " -e pavucontrol") },
-	{ MODKEY,			            XK_F8,		                spawn,	  SHCMD(TERMINAL " -e networkmanager_dmenu") },
+	{ MODKEY,			            XK_F8,		                spawn,	  SHCMD("networkmanager_dmenu") },
 	{ MODKEY,			            XK_F10,		                spawn,	  {.v = dmenucmd } },
 	{ MODKEY,			            XK_F11,		                spawn,	  SHCMD("mpv --no-cache --no-osc --no-input-default-bindings --profile=low-latency --input-conf=/dev/null --title=webcam $(ls /dev/video[0,2,4,6,8] | tail -n 1)") },
 	{ MODKEY,			            XK_F12,		                spawn,	  SHCMD("mw -Y; sigdwmblocks 6") },
 	{ MODKEY,			            XK_Print,		            spawn,	  SHCMD("maimpick") },
 	{ MODKEY,			            XK_Home,		            spawn,	  SHCMD("dmenumount") },
 	{ MODKEY,			            XK_End,		                spawn,	  SHCMD("dmenuumount") },
-	{ 0,			                XK_Print,		            spawn,	  SHCMD("maim pic-full-$(date '+%d%m%y-%H%M-%s').png") },
+	{ 0,			                XK_Print,		            spawn,	  SHCMD("maim ~/pictures/screenshots/pic-full-$(date '+%d%m%y-%H%M-%s').png; notify-send -t 10000 'screenshot(full) saved'") },
 // Multimedia Keys
 	{ MODKEY,			            XK_minus,		            spawn,	  SHCMD("pamixer --allow-boost -d 2; sigdwmblocks 5") },
 	{ MODKEY,			            XK_equal,		            spawn,	  SHCMD("pamixer --allow-boost -i 2; sigdwmblocks 5") },
@@ -300,7 +305,8 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
-	{ ClkRootWin,		    0,		        Button2,	    togglebar,	    {0} },
+	{ ClkRootWin,		    MODKEY,		    Button2,	    togglebar,	    {0} },
+	{ ClkRootWin,		    ShiftMask,		Button3,	    spawn,	        SHCMD(TERMINAL " -e nvim ~/.local/src/dwm/config.h") },
 //	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 };
 
