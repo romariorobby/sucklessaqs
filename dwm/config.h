@@ -316,6 +316,7 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 	{ ClkRootWin,		    MODKEY,		    Button2,	    togglebar,	    {0} },
 	{ ClkRootWin,		    ShiftMask,		Button3,	    spawn,	        SHCMD(TERMINAL " -e nvim ~/.local/src/dwm/config.h") },
+	{ ClkRootWin,		    0,		        Button2,	    spawn,	        SHCMD("sysact") },
 //	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 };
 
