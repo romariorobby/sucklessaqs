@@ -152,7 +152,14 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
-
+#define STACKKEYS(MOD,ACTION) \
+	{ MOD, XK_j,     ACTION##stack, {.i = INC(+1) } }, \
+	{ MOD, XK_k,     ACTION##stack, {.i = INC(-1) } }, \
+	{ MOD, XK_v,     ACTION##stack, {.i = 0 } }, \
+	/* { MOD, XK_grave, ACTION##stack, {.i = PREVSEL } }, \ */
+	/* { MOD, XK_a,     ACTION##stack, {.i = 1 } }, \ */
+	/* { MOD, XK_z,     ACTION##stack, {.i = 2 } }, \ */
+	/* { MOD, XK_x,     ACTION##stack, {.i = -1 } }, */
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 #include <X11/XF86keysym.h>
@@ -171,6 +178,8 @@ static const char *termcmd[]  = { TERMINAL, NULL };
 
 static Key keys[] = {
 	/* modifier                     key               function            argument */
+	STACKKEYS(MODKEY,                                 focus)
+	STACKKEYS(MODKEY|ShiftMask,                       push)
 	/* { MODKEY|ShiftMask,             XK_Return,        spawn,              {.v = dmenucmd } }, */
 	{ MODKEY|ShiftMask,             XK_Return,        spawn,              SHCMD("dmenu_run") },
 	{ MODKEY,			            XK_Return,        spawn,              {.v = termcmd } },
@@ -180,18 +189,18 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_f,             togglefloating,     {0} },
 	{ MODKEY,                       XK_g,             togglegaps,         {0} },
 	{ MODKEY,                       XK_s,             togglesticky,       {0} },
-	{ MODKEY,                       XK_j,             focusstack,         {.i = +1 } },
-	{ MODKEY,                       XK_k,             focusstack,         {.i = -1 } },
+	/* { MODKEY,                       XK_j,             focusstack,         {.i = +1 } }, */
+	/* { MODKEY,                       XK_k,             focusstack,         {.i = -1 } }, */
 	{ MODKEY,                       XK_o,             incnmaster,         {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_o,             incnmaster,         {.i = -1 } },
 	{ MODKEY,                       XK_h,             setmfact,           {.f = -0.05} },
 	{ MODKEY,                       XK_l,             setmfact,           {.f = +0.05} },
 	{ MODKEY,                       XK_space,         zoom,               {0} },
-	{ MODKEY|ShiftMask,             XK_k,             setcfact,           {.f = +0.25} },
-	{ MODKEY|ShiftMask,             XK_j,             setcfact,           {.f = -0.25} },
+	{ MODKEY|ControlMask,           XK_k,             setcfact,           {.f = +0.25} },
+	{ MODKEY|ControlMask,           XK_j,             setcfact,           {.f = -0.25} },
 	{ MODKEY|ShiftMask,             XK_BackSpace,     setcfact,           {.f =  0.00} },
-	{ MODKEY|ControlMask,           XK_h,             incrgaps,           {.i = +1 } },
-	{ MODKEY|ControlMask,           XK_l,             incrgaps,           {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_h,             incrgaps,           {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_l,             incrgaps,           {.i = -1 } },
 //	{ MODKEY|Mod1Mask,              XK_i,             incrigaps,          {.i = +1 } },
 //	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,             incrigaps,          {.i = -1 } },
 //	{ MODKEY|Mod1Mask,              XK_o,             incrogaps,          {.i = +1 } },

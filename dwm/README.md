@@ -18,6 +18,7 @@
 	- [my dwmblocks sripts](https://github.com/romariorobby/dotfiles/tree/main/dot_local/bin/blocks)
 - swallow
 - zoomswap
+- Stacker
 - scratchpads
 	- scratchpad[1] = `super + z` 
 	- scratchpad[2] = `super + x` 
