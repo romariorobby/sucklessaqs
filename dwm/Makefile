@@ -44,14 +44,15 @@ install: all
 	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	mkdir -p ${DESTDIR}${PREFIX}/share/dwm
-	cp -f info.mom ${DESTDIR}${PREFIX}/share/dwm
+	cp -f info2.mom ${DESTDIR}${PREFIX}/share/dwm
 	mkdir -p ${DESTDIR}${XSPREFIX}/xsessions
 	cp -f dwm.desktop $(DESTDIR)$(XSPREFIX)/xsessions
-	chmod 644 ${DESTDIR}${PREFIX}/share/dwm/info.mom
+	chmod 644 ${DESTDIR}${PREFIX}/share/dwm/info2.mom
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
 		${DESTDIR}${XSPREFIX}/share/dwm/info.mom\
+		${DESTDIR}${XSPREFIX}/share/dwm/info2.mom\
 		${DESTDIR}${MANPREFIX}/man1/dwm.1\
 		$(DESTDIR)$(XSPREFIX)/xsessions/dwm.desktop
 

@@ -1,5 +1,11 @@
 #define PATH(name)                      "/home/mario/.local/bin/blocks/"name
 
+/* buffer size for capturing output of the programs used for updating blocks */
+#define CMDOUTLENGTH                    50
+
+/* buffer size for status text */
+#define STATUSLENGTH                    256
+
 /* DELIMITERENDCHAR must be less than 32.
  * At max, DELIMITERENDCHAR - 1 number of clickable blocks will be allowed.
  * Raw characters larger than DELIMITERENDCHAR and smaller than ' ' in ASCII
@@ -8,8 +14,12 @@
    DELIMITERENDCHAR is 10) will switch the active colorscheme to the first one
    defined in colors array in dwm's config.h and so on.
  * If you wish to change DELIMITERENDCHAR, don't forget to update its value in
-   dwm.c and color codes in your pathu programs. */
+   [dwm.c] and color codes in your pathu programs. */
 #define DELIMITERENDCHAR                16
+
+static const char delimiter[] = { ' ',' ', DELIMITERENDCHAR };
+
+#include "block.h"
 
 /* If interval of a block is set to 0, the block will only be updated once at
    startup.
@@ -33,37 +43,20 @@
 static Block blocks[] = {
 /*      pathu                           pathc                                   interval        signal */
         { PATH("sb-packages"),          PATH("sb-packages"),                   0,              9},
-
+        { PATH("sb-music"),             PATH("sb-music"),                      0,              14},
         { PATH("sb-news"),              PATH("sb-news"),                       0,              10},
-
         { PATH("sb-torrent"),           PATH("sb-torrent"),                    20,             12},
-
         { PATH("sb-forecast"),          PATH("sb-forecast"),                   18000,          7},
-
         { PATH("sb-mailbox"),           PATH("sb-mailbox"),                    180,            6},
-
         { PATH("sb-volume"),            PATH("sb-volume"),                     0,              5},
-
         { PATH("sb-disk"),              PATH("sb-disk"),                       0,              8},
-
         { PATH("sb-cputemp"),           PATH("sb-cputemp"),                    1,              3},
-
         { PATH("sb-battery"),           PATH("sb-battery"),                    5,              2},
-
         { PATH("sb-clock"),             PATH("sb-clock"),                      60,             1},
-
         { PATH("sb-tasks"),             PATH("sb-tasks"),                      10,             13},
-
         { PATH("sb-nettraf"),           PATH("sb-nettraf"),                    1,              11},
-
         { PATH("sb-internet"),          PATH("sb-internet"),                   5,              4},
-
-        { PATH("sb-help-icon"),         PATH("sb-help-icon"),                  0,              14},
-
-//        { PATH("calendar"),          NULL,                                   30,             3},
-
+        { PATH("sb-help-icon"),         PATH("sb-help-icon"),                  0,              15},
         { NULL } /* just to mark the end of the array */
 };
-/* Default Delimiter string */
-/* static const char *delim =  " "; */
-#define DELIMITER                       " "
+//        { PATH("calendar"),          NULL,                                   30,             3},

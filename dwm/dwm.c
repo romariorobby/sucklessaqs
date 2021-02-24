@@ -77,7 +77,9 @@
 
 #define STATUSLENGTH                256
 #define DWMBLOCKSLOCKFILE           "/tmp/dwmblocks.pid"
-#define DELIMITERENDCHAR            15
+#define DELIMITERENDCHAR            16
+#define LSPAD						(lrpad / 2) /* padding on left side of status text */
+#define RSPAD						(lrpad / 2) /* padding on right side of status text */
 #define SYSTEM_TRAY_REQUEST_DOCK    0
 
 /* XEMBED messages */
@@ -690,7 +692,7 @@ buttonpress(XEvent *e)
                         click = ClkLtSymbol;
                 else if (ev->x < wsbar - wstext)
                         click = ClkWinTitle;
-                else if ((x = wsbar - lrpad / 2 - ev->x) > 0 && (x -= wstext - lrpad) <= 0) {
+                else if ((x = wsbar - RSPAD - ev->x) > 0 && (x -= wstext - LSPAD - RSPAD) <= 0) {
                         updatedwmblockssig(x);
                         click = ClkStatusText;
                 } else
@@ -1053,7 +1055,7 @@ drawbar(Monitor *m)
                 wsbar = wbar;
                 drw_setscheme(drw, scheme[SchemeNorm]);
                 x = wbar - wstext;
-                drw_rect(drw, x, 0, lrpad / 2, bh, 1, 1); x += lrpad / 2; /* to keep left padding clean */
+                drw_rect(drw, x, 0, LSPAD, bh, 1, 1); x += LSPAD; /* to keep left padding clean */
                 for (;;) {
                         if ((unsigned char)*stc >= ' ') {
                                 stc++;
@@ -1553,8 +1555,8 @@ motionnotify(XEvent *e)
                         focus(NULL);
                 }
                 mon = m;
-        } else if (ev->window == selmon->barwin && (x = wsbar - lrpad / 2 - ev->x) > 0
-                                                && (x -= wstext - lrpad) <= 0)
+        } else if (ev->window == selmon->barwin && (x = wsbar - RSPAD - ev->x) > 0
+                                                && (x -= wstext - LSPAD - RSPAD) <= 0)
                         updatedwmblockssig(x);
                 else if (selmon->statushandcursor) {
                         selmon->statushandcursor = 0;
@@ -2206,22 +2208,35 @@ sigchld(int unused)
 void
 sigdwmblocks(const Arg *arg)
 {
-        int fd;
+        /* int fd; */
+        static int fd = -1;
         struct flock fl;
         union sigval sv;
 
         if (!dwmblockssig)
                 return;
-        sv.sival_int = (dwmblockssig << 8) | arg->i;
-        fd = open(DWMBLOCKSLOCKFILE, O_RDONLY);
-        if (fd == -1)
-                return;
         fl.l_type = F_WRLCK;
-        fl.l_start = 0;
         fl.l_whence = SEEK_SET;
+        fl.l_start = 0;
         fl.l_len = 0;
-        if (fcntl(fd, F_GETLK, &fl) == -1 || fl.l_type == F_UNLCK)
+        if (fd == -1) {
+			if ((fd = open(DWMBLOCKSLOCKFILE, O_RDONLY)) == -1) 
                 return;
+			if (fcntl(fd, F_GETLK, &fl) == -1 || fl.l_type == F_UNLCK)
+				return;
+		} else {
+			if (fcntl(fd, F_GETLK, &fl) == -1)
+				return;
+			if (fl.l_type = F_UNLCK) {
+				close(fd);
+				if ((fd = open(DWMBLOCKSLOCKFILE, O_RDONLY)) == -1)
+					return;
+				fl.l_type = F_WRLCK;
+				if (fcntl(fd, F_GETLK, &fl) == -1 || fl.l_type == F_UNLCK)
+					return;
+			}
+		}
+        sv.sival_int = (dwmblockssig << 8) | arg->i;
         sigqueue(fl.l_pid, SIGRTMIN, sv);
 }
 
@@ -2563,32 +2578,32 @@ updatedwmblockssig(int x)
         char *stp = stexts;
         char tmp;
 
-        do {
-                if ((unsigned char)*sts >= ' ') {
-                        sts++;
-                        continue;
-                }
-                tmp = *sts;
-                *sts = '\0';
-                x += TTEXTW(stp);
-                *sts = tmp;
-                if (x > 0) {
-                        if (tmp == DELIMITERENDCHAR)
-                                break;
-                        if (!selmon->statushandcursor) {
-                                selmon->statushandcursor = 1;
-                                XDefineCursor(dpy, selmon->barwin, cursor[CurHand]->cursor);
-                        }
-                        dwmblockssig = tmp;
-                        return;
-                }
-                stp = ++sts;
-        } while (*sts != '\0');
+		while (*sts != '\0') {
+			if ((unsigned char)*sts >= ' ') {
+				sts++;
+				continue;
+			}
+			tmp = *sts;
+			*sts = '\0';
+			x += TTEXTW(stp);
+			*sts = tmp;
+			if (x > 0) {
+				if (tmp == DELIMITERENDCHAR)
+					break;
+				if (!selmon->statushandcursor) {
+						selmon->statushandcursor = 1;
+						XDefineCursor(dpy, selmon->barwin, cursor[CurHand]->cursor);
+				}
+				dwmblockssig = tmp;
+				return;
+			}
+			stp = ++sts;
+		}
         if (selmon->statushandcursor) {
-                selmon->statushandcursor = 0;
+				selmon->statushandcursor = 0;
                 XDefineCursor(dpy, selmon->barwin, cursor[CurNormal]->cursor);
-        }
-        dwmblockssig = 0;
+		}
+		dwmblockssig = 0;
 }
 
 int
@@ -2763,11 +2778,11 @@ updatestatus(void)
                         else
                                 *(sts++) = *rst;
                 *stp = *stc = *sts = '\0';
-                wstext = TEXTW(stextp);
+                wstext = TEXTW(stextp) + LSPAD + RSPAD;
         } else {
                 strcpy(stextc, "dwm-"VERSION);
                 strcpy(stexts, stextc);
-                wstext = TEXTW(stextc);
+                wstext = TEXTW(stextc) + LSPAD + RSPAD;
         }
         drawbar(selmon);
 }
