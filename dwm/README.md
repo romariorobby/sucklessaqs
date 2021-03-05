@@ -37,4 +37,6 @@
 	- Grid
 	- Centered
 - [X] 
-
+# Last Patch
+- [ ] Statusbar on all monitors
+- [ ] Showselmon

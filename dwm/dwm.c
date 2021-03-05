@@ -77,9 +77,10 @@
 
 #define STATUSLENGTH                256
 #define DWMBLOCKSLOCKFILE           "/tmp/dwmblocks.pid"
-#define DELIMITERENDCHAR            16
+#define DELIMITERENDCHAR            17
 #define LSPAD						(lrpad / 2) /* padding on left side of status text */
 #define RSPAD						(lrpad / 2) /* padding on right side of status text */
+
 #define SYSTEM_TRAY_REQUEST_DOCK    0
 
 /* XEMBED messages */
@@ -101,7 +102,7 @@ enum { CurNormal, CurHand, CurResize, CurMove, CurLast }; /* cursor */
 enum { SchemeNorm, SchemeCol1, SchemeCol2, SchemeCol3, SchemeCol4,
        SchemeCol5, SchemeCol6, SchemeCol7, SchemeCol8, SchemeCol9,
        SchemeCol10, SchemeCol11, SchemeCol12, SchemeCol13, SchemeCol14,
-	   SchemeCol15, SchemeSel }; /* color schemes */
+	   SchemeCol15, SchemeSel, SchemeInv }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetSystemTray, NetSystemTrayOP, NetSystemTrayOrientation, NetSystemTrayOrientationHorz,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
@@ -336,10 +337,10 @@ static char stexts[STATUSLENGTH];
 static int screen;
 static int sw, sh;              /* X display screen geometry width, height */
 static int bh, blw, ble, stw;   /* bar geometry */
-static int lrpad;               /* sum of left and right padding for text */
-static int (*xerrorxlib)(Display *, XErrorEvent *);
 static int wsbar;               /* width of selmon bar */
 static int wstext;              /* width of status text*/
+static int lrpad;               /* sum of left and right padding for text */
+static int (*xerrorxlib)(Display *, XErrorEvent *);
 static unsigned int dwmblockssig;
 static unsigned int numlockmask = 0;
 static void (*handler[LASTEvent]) (XEvent *) = {
@@ -667,7 +668,7 @@ unswallow(Client *c)
 void
 buttonpress(XEvent *e)
 {
-	int i, x;
+        int i, x;
         unsigned int click;
 	Arg arg = {0};
 	Client *c;
@@ -1037,7 +1038,7 @@ void
 drawbar(Monitor *m)
 {
 	int x, w;
-        int wbar = m->ww;
+       int wbar = m->ww;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
@@ -1047,7 +1048,7 @@ drawbar(Monitor *m)
                 wbar -= getsystraywidth();
 
 	/* draw status first so it can be overdrawn by tags later */
-	if (m == selmon) { /* status is only drawn on selected monitor */
+	if (m == selmon || 1) { /* status is only drawn on selected monitor */
                 char *stc = stextc;
                 char *stp = stextc;
                 char tmp;
@@ -1085,7 +1086,13 @@ drawbar(Monitor *m)
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
-		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
+		/* drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]); */
+		if (m == selmon) {
+			drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
+		}
+		else {
+			drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeInv : SchemeNorm]);
+		}
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
 		if (occ & 1 << i)
 			drw_rect(drw, x + boxs, boxs, boxw, boxw,
@@ -1105,7 +1112,8 @@ drawbar(Monitor *m)
 
 	if (w > bh) {
 		if (m->sel) {
-			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+			/* drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]); */
+			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeInv]);
 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
 			if (m->sel->isfloating)
 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
@@ -2208,7 +2216,6 @@ sigchld(int unused)
 void
 sigdwmblocks(const Arg *arg)
 {
-        /* int fd; */
         static int fd = -1;
         struct flock fl;
         union sigval sv;
@@ -2230,10 +2237,10 @@ sigdwmblocks(const Arg *arg)
 			if (fl.l_type = F_UNLCK) {
 				close(fd);
 				if ((fd = open(DWMBLOCKSLOCKFILE, O_RDONLY)) == -1)
-					return;
+						return;
 				fl.l_type = F_WRLCK;
 				if (fcntl(fd, F_GETLK, &fl) == -1 || fl.l_type == F_UNLCK)
-					return;
+						return;
 			}
 		}
         sv.sival_int = (dwmblockssig << 8) | arg->i;
@@ -2765,7 +2772,7 @@ void
 updatestatus(void)
 {
 	char rawstext[STATUSLENGTH];
-
+	Monitor* m;
 	if (gettextprop(root, XA_WM_NAME, rawstext, sizeof rawstext)) {
                 char stextp[STATUSLENGTH];
                 char *stp = stextp, *stc = stextc, *sts = stexts;
@@ -2784,7 +2791,9 @@ updatestatus(void)
                 strcpy(stexts, stextc);
                 wstext = TEXTW(stextc) + LSPAD + RSPAD;
         }
-        drawbar(selmon);
+        /* drawbar(selmon); */
+		for(m = mons; m; m = m->next)
+				drawbar(m);
 }
 
 void

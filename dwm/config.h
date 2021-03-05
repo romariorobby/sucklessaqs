@@ -75,21 +75,22 @@ static const char *colors[][10]      = {
     [SchemeCol14] = { "#83a598", "#141414", "#83a598" },        /* >[14] 0F - Tag selected*/
     [SchemeCol15] = { "#fb4934", "#141414", "#fb4934" },        /* [15] 10 - Tag urgent*/
     [SchemeSel]   = { "#458588", "#141414", "#458588" },        /* [16] 11 - Tag occupied*/
+    [SchemeInv]   = { "#fb4934", "#458588", "#458588" },        /* [17] 11 - Invert*/
 };
 typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
 const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[] = {TERMINAL, "-n", "spfm", "-g", "144x41", "-e", "joshuto", NULL };
-const char *spcmd3[] = {"bitwarden", NULL };
-const char *spcmd4[] = {TERMINAL, "-n", "spemacs", "-g", "144x41", "-e", "emacs", NULL };
+const char *spcmd2[] = {TERMINAL, "-n", "spfm", "-g", "144x41", "-e", "lf", NULL };
+/* const char *spcmd3[] = {"bitwarden", NULL }; */
+/* const char *spcmd4[] = {TERMINAL, "-n", "spemacs", "-g", "144x41", "-e", "emacs", NULL }; */
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
 	{"spfm",        spcmd2},
-	{"bitwarden",   spcmd3},
-	{"spemacs",     spcmd4},
+	/* {"bitwarden",   spcmd3}, */
+	/* {"spemacs",     spcmd4}, */
 };
 
 /* tagging */
@@ -104,17 +105,21 @@ static const Rule rules[] = {
 	{ "Gimp",             NULL,          NULL,           0,              1,          0,           0,        -1 },
 	{ "Firefox",          NULL,          NULL,           1 << 8,         0,          0,          -1,        -1 },
 	{ "Brave-browser",    NULL,          NULL,           1 << 2,         0,          0,          -1,        -1 },
-	{ "Rambox",           NULL,          NULL,           1 << 5,         0,          0,          -1,        -1 },
+	{ "Pcmanfm",          NULL,          NULL,           1 << 5,         0,          0,          -1,        -1 },
+	/* { "Emacs",			  NULL,          NULL,           1 << 5,         0,          0,          -1,        -1 }, */
+	{ "Rambox",           NULL,          NULL,           1 << 4,         0,          0,          -1,        -1 },
+	{ "Kodi",             NULL,          NULL,           1 << 3,         0,          0,          -1,        -1 },
 	{ "Spotify",          NULL,          NULL,           4,              0,          0,          -1,        -1 },
 	{ "Notion",           NULL,          NULL,           2,              0,          0,          -1,        -1 },
+	{ "TeamViewer",       NULL,          NULL,           1 << 6,         1,          0,          -1,        -1 },
 	{ "obsidian",         NULL,          NULL,           2,              0,          0,          -1,        -1 },
 	{ TERMINAL,           NULL,          NULL,           0,              0,          1,           0,        -1 },
 	{ TERMCLASS,          NULL,          NULL,           0,              0,          1,           0,        -1 },
 	{ NULL,               NULL,          "Event Tester", 0,              0,          0,           1,        -1 }, /* xev */
 	{ NULL,		          "spterm",	     NULL,		     SPTAG(0),		 1,		     1,           0,        -1 },
 	{ NULL,		          "spfm",		 NULL,		     SPTAG(1),		 1,		     1,           0,        -1 },
-	{ NULL,		          "bitwarden",	 NULL,		     SPTAG(2),		 1,		     1,           0,        -1 },
-	{ NULL,		          "spemacs",	 NULL,		     SPTAG(3),		 1,		     1,           0,        -1 },
+	/* { NULL,		          "bitwarden",	 NULL,		     SPTAG(2),		 1,		     1,           0,        -1 }, */
+	/* { NULL,		          "spemacs",	 NULL,		     SPTAG(3),		 1,		     1,           0,        -1 }, */
 };
 
 /* layout(s) */
@@ -156,8 +161,8 @@ static const Layout layouts[] = {
 	{ MOD, XK_j,     ACTION##stack, {.i = INC(+1) } }, \
 	{ MOD, XK_k,     ACTION##stack, {.i = INC(-1) } }, \
 	{ MOD, XK_v,     ACTION##stack, {.i = 0 } }, \
+	{ MOD, XK_a,     ACTION##stack, {.i = 1 } }, \
 	/* { MOD, XK_grave, ACTION##stack, {.i = PREVSEL } }, \ */
-	/* { MOD, XK_a,     ACTION##stack, {.i = 1 } }, \ */
 	/* { MOD, XK_z,     ACTION##stack, {.i = 2 } }, \ */
 	/* { MOD, XK_x,     ACTION##stack, {.i = -1 } }, */
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
@@ -242,7 +247,7 @@ static Key keys[] = {
 	{ MODKEY,			            XK_period,	      shiftview,	      { .i = 1 } },
 	{ MODKEY,            			XK_z,  	          togglescratch,      {.ui = 0 } },
 	{ MODKEY,            			XK_x,	          togglescratch,      {.ui = 1 } },
-	{ MODKEY,            			XK_c,	          togglescratch,      {.ui = 2 } },
+	/* { MODKEY,            			XK_c,	          togglescratch,      {.ui = 2 } }, */
 	{ MODKEY|ControlMask,			XK_space,		  spawn,		      SHCMD("dmenuunicode") },
 	{ MODKEY|ShiftMask,             XK_q,			  spawn,			  SHCMD("sysact") },
 //	{ MODKEY|ShiftMask,             XK_q,             quit,               {0} },
@@ -289,7 +294,7 @@ static Key keys[] = {
 //	{ 0,                            XF86XK_AudioMicMute,		spawn,	  SHCMD("pamixer --default-source -t; sigdwmblocks 5") },
 //	{ 0,                            XF86XK_ScreenSaver,	        spawn,	  SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
 //	{ 0,                            XF86XK_PowerOff,		    spawn,    SHCMD("sysact") },
-	{ MODKEY,						XK_p,						spawn,	  SHCMD("mpc toggle; sigdwmblocks 14") },
+	{ MODKEY,						XK_p,						spawn,	  SHCMD("mpc toggle") },
 	{ MODKEY,						XK_bracketleft,				spawn,	  SHCMD("mpc seek -10") },
 	{ MODKEY|ShiftMask,			    XK_bracketleft,				spawn,	  SHCMD("mpc prev") },
 	{ MODKEY|ShiftMask,			    XK_bracketright,			spawn,	  SHCMD("mpc next") },
@@ -312,7 +317,7 @@ static Button buttons[] = {
 	{ ClkStatusText,        0,              Button5,        sigdwmblocks,   {.i = 5} },
 	{ ClkStatusText,        ShiftMask,      Button1,        sigdwmblocks,   {.i = 6} },
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[9]} },
 	{ ClkStatusText,        ShiftMask,      Button3,        spawn,          SHCMD(TERMINAL " -e nvim ~/.local/src/yadav-dwmblocks/config.h") },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,		    MODKEY,		    Button4,	    incrgaps,	    {.i = +1} },
@@ -324,6 +329,7 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 	{ ClkRootWin,		    MODKEY,		    Button2,	    togglebar,	    {0} },
+	{ ClkRootWin,		    ShiftMask,		Button1,	    spawn,	        SHCMD(TERMINAL " -e nvim ~/.local/src/st/config.h") },
 	{ ClkRootWin,		    ShiftMask,		Button3,	    spawn,	        SHCMD(TERMINAL " -e nvim ~/.local/src/dwm/config.h") },
 	{ ClkRootWin,		    0,		        Button2,	    spawn,	        SHCMD("sysact") },
 //	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },

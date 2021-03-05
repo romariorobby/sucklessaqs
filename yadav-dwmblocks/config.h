@@ -12,12 +12,10 @@
    character set can be used for signaling color change in status.
  * The character corresponding to DELIMITERENDCHAR + 1 ('\x0b' when
    DELIMITERENDCHAR is 10) will switch the active colorscheme to the first one
-   defined in colors array in dwm's config.h and so on.
- * If you wish to change DELIMITERENDCHAR, don't forget to update its value in
-   [dwm.c] and color codes in your pathu programs. */
-#define DELIMITERENDCHAR                16
+   defined in colors array in dwm's config.h and so on.  * If you wish to change DELIMITERENDCHAR, don't forget to update its value in [dwm.c] and color codes in your pathu programs. */
+#define DELIMITERENDCHAR                17
 
-static const char delimiter[] = { ' ',' ', DELIMITERENDCHAR };
+static const char delimiter[] = { ' ', DELIMITERENDCHAR };
 
 #include "block.h"
 
@@ -43,20 +41,22 @@ static const char delimiter[] = { ' ',' ', DELIMITERENDCHAR };
 static Block blocks[] = {
 /*      pathu                           pathc                                   interval        signal */
         { PATH("sb-packages"),          PATH("sb-packages"),                   0,              9},
-        { PATH("sb-music"),             PATH("sb-music"),                      0,              14},
+        /* { PATH("sb-music"),             PATH("sb-music"),                      0,              14}, */
+        { PATH("sb-spotify"),           NULL,                                  0,              3},
         { PATH("sb-news"),              PATH("sb-news"),                       0,              10},
         { PATH("sb-torrent"),           PATH("sb-torrent"),                    20,             12},
-        { PATH("sb-forecast"),          PATH("sb-forecast"),                   18000,          7},
+        /* { PATH("sb-forecast"),          PATH("sb-forecast"),                   18000,          7}, */
         { PATH("sb-mailbox"),           PATH("sb-mailbox"),                    180,            6},
         { PATH("sb-volume"),            PATH("sb-volume"),                     0,              5},
-        { PATH("sb-disk"),              PATH("sb-disk"),                       0,              8},
-        { PATH("sb-cputemp"),           PATH("sb-cputemp"),                    1,              3},
+        /* { PATH("sb-disk"),              PATH("sb-disk"),                       0,              8}, */
+        /* { PATH("sb-cpu"),               PATH("sb-cpu"),                        1,              3}, */
+        { PATH("sb-internet"),          PATH("sb-internet"),                   5,              4},
         { PATH("sb-battery"),           PATH("sb-battery"),                    5,              2},
         { PATH("sb-clock"),             PATH("sb-clock"),                      60,             1},
         { PATH("sb-tasks"),             PATH("sb-tasks"),                      10,             13},
-        { PATH("sb-nettraf"),           PATH("sb-nettraf"),                    1,              11},
-        { PATH("sb-internet"),          PATH("sb-internet"),                   5,              4},
+        /* { PATH("sb-nettraf"),           PATH("sb-nettraf"),                    1,              11}, */
         { PATH("sb-help-icon"),         PATH("sb-help-icon"),                  0,              15},
+        { PATH("sb-record"),            NULL,                                  0,              16},
         { NULL } /* just to mark the end of the array */
 };
 //        { PATH("calendar"),          NULL,                                   30,             3},

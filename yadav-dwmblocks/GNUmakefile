@@ -3,7 +3,7 @@ PREFIX := /usr/local
 
 CC := gcc
 CFLAGS := -O3 -Wall -Wextra
-CFLAGSEXTRA := -Wno-missing-field-initializers -Wno-unused-parameter
+# CFLAGSEXTRA := -Wno-missing-field-initializers -Wno-unused-parameter
 
 X11CFLAGS := $(shell pkg-config --cflags x11)
 X11LIBS := $(shell pkg-config --libs x11)
@@ -11,7 +11,7 @@ X11LIBS := $(shell pkg-config --libs x11)
 all: dwmblocks sigdwmblocks/sigdwmblocks xgetrootname/xgetrootname
 
 dwmblocks: dwmblocks.c config.h block.h
-	${CC} -o $@ ${CFLAGS} ${CFLAGSEXTRA} ${X11CFLAGS} $< ${X11LIBS}
+	${CC} -o $@ -Wno-missing-field-initializers -Wno-unused-parameter ${CFLAGS} ${CFLAGSEXTRA} ${X11CFLAGS} $< ${X11LIBS}
 
 sigdwmblocks/sigdwmblocks: sigdwmblocks/sigdwmblocks.c
 	${CC} -o $@ ${CFLAGS} $<
