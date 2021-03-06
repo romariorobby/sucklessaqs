@@ -18,7 +18,7 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "SF Pro Text:size=10","Noto Color Emoji:pixelsize=10","JoyPixels:pixelsize=10:antialias=true:autohint=true","Siji:size=10","AppleEmoji:pixelsize=10:antialias=true:autohint=true","Hack Nerd Font:size=10", "Hasklug Nerd Font:size=10" };
+static const char *fonts[]          = { "monospace:size=10","Noto Color Emoji:pixelsize=10","JoyPixels:pixelsize=10:antialias=true:autohint=true","Siji:size=10","AppleEmoji:pixelsize=10:antialias=true:autohint=true","Hack Nerd Font:size=10", "Hasklug Nerd Font:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_bg[]          = "#141414";
@@ -185,9 +185,9 @@ static Key keys[] = {
 	/* modifier                     key               function            argument */
 	STACKKEYS(MODKEY,                                 focus)
 	STACKKEYS(MODKEY|ShiftMask,                       push)
-	/* { MODKEY|ShiftMask,             XK_Return,        spawn,              {.v = dmenucmd } }, */
-	{ MODKEY|ShiftMask,             XK_Return,        spawn,              SHCMD("dmenu_run") },
-	{ MODKEY,			            XK_Return,        spawn,              {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_Return,        spawn,              {.v = dmenucmd } },
+	/* { MODKEY|ShiftMask,             XK_Return,        spawn,              SHCMD("dmenu_run") }, */
+	/* { MODKEY,			            XK_Return,        spawn,              {.v = termcmd } }, */
 	{ MODKEY,                       XK_b,             togglebar,          {0} },
 	{ MODKEY|ShiftMask,             XK_b,             togglesystray,      {0} },
 	{ MODKEY,                       XK_f,             togglefullscr,      {0} },
@@ -248,8 +248,8 @@ static Key keys[] = {
 	{ MODKEY,            			XK_z,  	          togglescratch,      {.ui = 0 } },
 	{ MODKEY,            			XK_x,	          togglescratch,      {.ui = 1 } },
 	/* { MODKEY,            			XK_c,	          togglescratch,      {.ui = 2 } }, */
-	{ MODKEY|ControlMask,			XK_space,		  spawn,		      SHCMD("dmenuunicode") },
-	{ MODKEY|ShiftMask,             XK_q,			  spawn,			  SHCMD("sysact") },
+	/* { MODKEY|ControlMask,			XK_space,		  spawn,		      SHCMD("dmenuunicode") }, */
+	/* { MODKEY|ShiftMask,             XK_q,			  spawn,			  SHCMD("sysact") }, */
 //	{ MODKEY|ShiftMask,             XK_q,             quit,               {0} },
 	{ MODKEY|ShiftMask,             XK_Escape,        quit,               {0} },
 	TAGKEYS(                        XK_1,                                 0)
@@ -262,15 +262,15 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                                 7)
 	TAGKEYS(                        XK_9,                                 8)
 // Apps Launcher
-	{ Mod1Mask,                     XK_w,			  spawn,			  SHCMD("netw-app") },
-	{ Mod1Mask|ShiftMask,			XK_w,		      spawn,	          SHCMD("networkmanager_dmenu") },
-	{ Mod1Mask,                     XK_m,			  spawn,			  SHCMD("med-app") },
-	{ Mod1Mask,                     XK_e,			  spawn,			  SHCMD("entert-app") },
-	{ Mod1Mask,                     XK_x,			  spawn,			  SHCMD("mics-app") },
+	/* { Mod1Mask,                     XK_w,			  spawn,			  SHCMD("netw-app") }, */
+	/* { Mod1Mask|ShiftMask,			XK_w,		      spawn,	          SHCMD("networkmanager_dmenu") }, */
+	/* { Mod1Mask,                     XK_m,			  spawn,			  SHCMD("med-app") }, */
+	/* { Mod1Mask,                     XK_e,			  spawn,			  SHCMD("entert-app") }, */
+	/* { Mod1Mask,                     XK_x,			  spawn,			  SHCMD("mics-app") }, */
 	/* { MODKEY,                       XK_e,			  spawn,			  SHCMD(TERMINAL " -e neomutt ; sigdwmblocks 6") }, */
-	{ Mod1Mask,                     XK_n,			  spawn,			  SHCMD("notes-app") },
+	/* { Mod1Mask,                     XK_n,			  spawn,			  SHCMD("notes-app") }, */
 // MOD + F{N}
-	{ MODKEY,			            XK_F1,		                spawn,	  SHCMD("groff -mom /usr/local/share/dwm/info.mom -Tpdf | zathura -") },
+	/* { MODKEY,			            XK_F1,		                spawn,	  SHCMD("groff -mom /usr/local/share/dwm/info.mom -Tpdf | zathura -") }, */
 	{ MODKEY,			            XK_F2,		                spawn,	  SHCMD(TERMINAL " -e pulsemixer") },
 	{ MODKEY,			            XK_F3,		                spawn,	  SHCMD(TERMINAL " -e pavucontrol") },
 	{ MODKEY,			            XK_F8,		                spawn,	  SHCMD("networkmanager_dmenu") },
@@ -278,16 +278,16 @@ static Key keys[] = {
 	{ MODKEY,			            XK_F11,		                spawn,	  SHCMD("mpv --no-cache --no-osc --no-input-default-bindings --profile=low-latency --input-conf=/dev/null --title=webcam $(ls /dev/video[0,2,4,6,8] | tail -n 1)") },
 	/* { MODKEY,						XK_F12,						spawn,	  SHCMD("remaps & notify-send \\\"⌨️ Keyboard remapping...\\\" \\\"Re-running keyboard defaults for any newly plugged-in keyboards.\\\"") }, */
 	{ MODKEY,			            XK_F12,		                spawn,	  SHCMD("mw -Y; sigdwmblocks 6") },
-	{ MODKEY,			            XK_Print,		            spawn,	  SHCMD("maimpick") },
-	{ MODKEY,			            XK_Home,		            spawn,	  SHCMD("dmenumount") },
-	{ MODKEY,			            XK_End,		                spawn,	  SHCMD("dmenuumount") },
-	{ 0,			                XK_Print,		            spawn,	  SHCMD("maim ~/media/images/screenshots/pic-full-$(date '+%d%m%y-%H%M-%s').png; notify-send -t 10000 'screenshot(full) saved'") },
+	/* { MODKEY,			            XK_Print,		            spawn,	  SHCMD("maimpick") }, */
+	/* { MODKEY,			            XK_Home,		            spawn,	  SHCMD("dmenumount") }, */
+	/* { MODKEY,			            XK_End,		                spawn,	  SHCMD("dmenuumount") }, */
+	/* { 0,			                XK_Print,		            spawn,	  SHCMD("maim ~/media/images/screenshots/pic-full-$(date '+%d%m%y-%H%M-%s').png; notify-send -t 10000 'screenshot(full) saved'") }, */
 // Multimedia Keys
 	/* { MODKEY,			            XK_minus,		            spawn,	  SHCMD("pamixer --allow-boost -d 2; sigdwmblocks 5") }, */
 	/* { MODKEY,			            XK_equal,		            spawn,	  SHCMD("pamixer --allow-boost -i 2; sigdwmblocks 5") }, */
 	{ MODKEY,			            XK_minus,		            spawn,	  SHCMD("mpc volume -5") },
 	{ MODKEY,			            XK_equal,		            spawn,	  SHCMD("mpc volume +5") },
-	{ 0,			                XF86XK_Display,		        spawn,	  SHCMD("displayselect") },
+	/* { 0,			                XF86XK_Display,		        spawn,	  SHCMD("displayselect") }, */
 	{ 0,                            XF86XK_AudioMute,		    spawn,	  SHCMD("pamixer -t; sigdwmblocks 5") },
 //	{ 0,                            XF86XK_TaskPane,		    spawn,    SHCMD(TERMINAL " -e htop") },
 //	{ 0,                            XF86XK_MyComputer,		    spawn,	  SHCMD(TERMINAL " -e lf /") },

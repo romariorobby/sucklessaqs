@@ -38,5 +38,6 @@
 	- Centered
 - [X] 
 # Last Patch
-- [ ] Statusbar on all monitors
-- [ ] Showselmon
+- [X] status2d
+> - [ ] Statusbar on all monitors
+>- [ ] Showselmon

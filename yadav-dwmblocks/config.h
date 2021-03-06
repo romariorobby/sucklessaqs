@@ -51,6 +51,7 @@ static Block blocks[] = {
         /* { PATH("sb-disk"),              PATH("sb-disk"),                       0,              8}, */
         /* { PATH("sb-cpu"),               PATH("sb-cpu"),                        1,              3}, */
         { PATH("sb-internet"),          PATH("sb-internet"),                   5,              4},
+        /* { PATH("battery"),       NULL,                                  5,              2}, */
         { PATH("sb-battery"),           PATH("sb-battery"),                    5,              2},
         { PATH("sb-clock"),             PATH("sb-clock"),                      60,             1},
         { PATH("sb-tasks"),             PATH("sb-tasks"),                      10,             13},
