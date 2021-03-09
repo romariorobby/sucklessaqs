@@ -27,8 +27,10 @@ install: all
 	install -m 0755 dwmblocks ${DESTDIR}${PREFIX}/bin/dwmblocks
 	install -m 0755 sigdwmblocks/sigdwmblocks ${DESTDIR}${PREFIX}/bin/sigdwmblocks
 	install -m 0755 xgetrootname/xgetrootname ${DESTDIR}${PREFIX}/bin/xgetrootname
+	install -m 644 statusbar.hook /usr/share/libalpm/hooks/dwmblocks-statusbar.hook
 
 uninstall:
-	rm -f ${DESTDIR}${PREFIX}/bin/dwmblocks ${DESTDIR}${PREFIX}/bin/sigdwmblocks ${DESTDIR}${PREFIX}/bin/xgetrootname
+	rm -f ${DESTDIR}${PREFIX}/bin/dwmblocks ${DESTDIR}${PREFIX}/bin/sigdwmblocks ${DESTDIR}${PREFIX}/bin/xgetrootname /usr/share/libalpm/hooks/dwmblocks-statusbar.hook
+
 
 .PHONY: all clean install uninstall
